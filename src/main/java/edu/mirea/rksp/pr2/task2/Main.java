@@ -48,7 +48,7 @@ public class Main {
         Files.copy(source.toPath(), dest.toPath());
     }
 
-    private static File createFile(final String filename, final String pathname, final long sizeInBytes) throws IOException {
+    public static File createFile(final String filename, final String pathname, final long sizeInBytes) throws IOException {
         File file = new File(pathname + File.separator + filename);
         file.createNewFile();
 
