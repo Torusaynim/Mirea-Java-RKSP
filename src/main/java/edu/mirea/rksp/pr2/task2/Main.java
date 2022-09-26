@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 
+import static edu.mirea.rksp.pr2.task1.Main.createFile;
+
 public class Main {
     private static void copyFileUsingStream(File source, File dest) throws IOException {
         InputStream is = null;
@@ -46,17 +48,6 @@ public class Main {
 
     private static void copyFileUsingJava7Files(File source, File dest) throws IOException {
         Files.copy(source.toPath(), dest.toPath());
-    }
-
-    public static File createFile(final String filename, final String pathname, final long sizeInBytes) throws IOException {
-        File file = new File(pathname + File.separator + filename);
-        file.createNewFile();
-
-        RandomAccessFile raf = new RandomAccessFile(file, "rw");
-        raf.setLength(sizeInBytes);
-        raf.close();
-
-        return file;
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {

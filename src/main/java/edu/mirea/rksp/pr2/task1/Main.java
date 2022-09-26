@@ -25,6 +25,12 @@ public class Main {
         Path tmpDir = Paths.get(currentDir, "tmp");
         System.out.println("Working directory is - "+tmpDir);
 
-        
+        // creating file with text
+        File myFile = createFile("file.txt", tmpDir.toString(),0);
+        String str = "Hello, World!\nNew, second line\nAnd another line\nYet another line\n...";
+        byte[] bs = str.getBytes();
+        Files.write(myFile.toPath(), bs);
+
+        System.out.println("File "+myFile.getName()+" contents:\n" + new String(Files.readAllBytes(myFile.toPath())));
     }
 }
