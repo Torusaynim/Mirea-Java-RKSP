@@ -62,7 +62,6 @@ class FileGenerator implements Runnable {
                 Integer size = random.nextInt(91)+10;
                 int time = random.nextInt(901)+100;
 
-
                 File file = new File(type,size);
 
                 System.out.println("[" + Thread.currentThread().getName() + "] Generated File: " + file.size + " " + file.type);

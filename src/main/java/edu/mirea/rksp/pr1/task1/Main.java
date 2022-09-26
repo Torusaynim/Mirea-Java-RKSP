@@ -39,11 +39,11 @@ public class Main {
 
         for (int i = 0; i < threadCount; i++){
             threads[i] = new SumThread(countDownLatch, Arrays
-                    .copyOfRange(
-                            array,
-                            i * arrayLength / threadCount,
-                            (i + 1) * arrayLength / threadCount
-                    )
+                .copyOfRange(
+                    array,
+                    i * arrayLength / threadCount,
+                    (i + 1) * arrayLength / threadCount
+                )
             );
         }
 
