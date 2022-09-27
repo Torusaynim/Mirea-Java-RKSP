@@ -27,7 +27,7 @@ public class Main {
     }
 
     // Compute and print a checksum for the given file
-    private static void sum(File file) throws IOException {
+    public static void sum(File file) throws IOException {
         try (
             FileInputStream fis = new FileInputStream(file);
             FileChannel fc = fis.getChannel()) {
@@ -40,7 +40,7 @@ public class Main {
             int sum = sum(bb);
             int kb = (sz + 1023) / 1024;
             String s = Integer.toString(sum);
-            System.out.println(file.getName()+", "+kb+"KB: CheckSum - "+s);
+            System.out.println(file.getName()+": FileSize "+kb+" KB, CheckSum="+s);
         }
     }
 
