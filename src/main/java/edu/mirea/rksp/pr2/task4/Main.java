@@ -1,7 +1,5 @@
 package edu.mirea.rksp.pr2.task4;
 
-import org.apache.commons.io.FileUtils;
-
 import static edu.mirea.rksp.pr2.task3.Main.sum;
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -53,6 +51,11 @@ public class Main {
                     if (kind == OVERFLOW) {
                         continue;
                     } else if (kind == ENTRY_CREATE) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         CreateBak(Paths.get(path, fileName.toString()),
                                 Paths.get(reservePath, fileName.toString()));
                     } else if (kind == ENTRY_DELETE) {
