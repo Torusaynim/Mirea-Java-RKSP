@@ -42,7 +42,6 @@ public class Main {
         System.out.println(file.getName()+": FileSize "+kb+" KB, CheckSum="+s);
 
         // Close the channel and the stream
-        bb.clear();
         fc.close();
         fis.close();
     }

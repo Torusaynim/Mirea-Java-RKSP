@@ -1,16 +1,19 @@
 package edu.mirea.rksp.pr2.task4;
 
+import org.apache.commons.io.FileUtils;
+
 import static edu.mirea.rksp.pr2.task3.Main.sum;
-import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -78,6 +81,48 @@ public class Main {
         }
     }
 
+    // Compare the two files and print added or deleted lines
+    private static void Diff(Path path, Path reservePath) {
+        try {
+            Stream<String> stream = Files.lines(path);
+            List<String> newList = stream.collect(Collectors.toList());
+            stream = Files.lines(reservePath);
+            List<String> oldList = stream.collect(Collectors.toList());
+
+            System.out.println("=============");
+            System.out.printf("Old list: ");
+            System.out.println(oldList);
+
+            ArrayList<String> removedList = new ArrayList<String>();
+            for (String itemToRemove : oldList) {
+                if(!newList.contains(itemToRemove)){
+                    removedList.add(itemToRemove);
+                }
+            }
+
+            ArrayList<String> addedList = new ArrayList<String>();
+            for (String itemToAdd : newList) {
+                if(!oldList.contains(itemToAdd)){
+                    addedList.add(itemToAdd);
+                }
+            }
+
+            System.out.printf("New list: ");
+            System.out.println(newList);
+
+            System.out.println("=============");
+            System.out.printf("Removed: ");
+            System.out.println(removedList);
+
+            System.out.printf("Added: ");
+            System.out.println(addedList);
+
+            stream.close();
+        } catch (Throwable cause) {
+            System.out.println("Exception");
+        }
+    }
+
     private static void Reserve(String path, String reservePath) {
         CreateDirectory(reservePath);
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -113,56 +158,10 @@ public class Main {
         }
     }
 
-    // Compare the two files and print added or deleted lines with line numbers
-    private static void Diff(Path path, Path reservePath) {
-        try {
-            var fis = new FileInputStream(path.toFile());
-            var fisReserve = new FileInputStream(reservePath.toFile());
-            var buffer = new byte[1024];
-            var bufferReserve = new byte[1024];
-            int length;
-            int lengthReserve;
-            int line = 1;
-            while ((length = fis.read(buffer)) > 0 && (lengthReserve = fisReserve.read(bufferReserve)) > 0) {
-                var str = new String(buffer, 0, length);
-                var strReserve = new String(bufferReserve, 0, lengthReserve);
-                var lines = str.split("\\r?\\n");
-                var linesReserve = strReserve.split("\\r?\\n");
-                var i = 0;
-                var j = 0;
-                while (i < lines.length && j < linesReserve.length) {
-                    if (!lines[i].equals(linesReserve[j])) {
-                        System.out.println("Line " + line + " added: " + lines[i]);
-                        j++;
-                    } else {
-                        i++;
-                        j++;
-                    }
-                    line++;
-                }
-                while (i < lines.length) {
-                    System.out.println("Line " + line + " added: " + lines[i]);
-                    i++;
-                    line++;
-                }
-                while (j < linesReserve.length) {
-                    System.out.println("Line " + line + " deleted: " + linesReserve[j]);
-                    j++;
-                    line++;
-                }
-            }
-            fis.close();
-            fisReserve.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private static void CreateBak(Path path, Path reservePath) {
         try {
             java.nio.file.Files.copy(path, reservePath.resolveSibling(
                     reservePath.getFileName() + ".bak"), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
