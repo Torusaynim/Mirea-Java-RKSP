@@ -28,20 +28,23 @@ public class Main {
 
     // Compute and print a checksum for the given file
     public static void sum(File file) throws IOException {
-        try (
-            FileInputStream fis = new FileInputStream(file);
-            FileChannel fc = fis.getChannel()) {
+        FileInputStream fis = new FileInputStream(file);
+        FileChannel fc = fis.getChannel();
 
-            // Get the file's size and then map it into memory
-            int sz = (int) fc.size();
-            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, sz);
+        // Get the file's size and then map it into memory
+        int sz = (int) fc.size();
+        MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, sz);
 
-            // Compute and print the checksum
-            int sum = sum(bb);
-            int kb = (sz + 1023) / 1024;
-            String s = Integer.toString(sum);
-            System.out.println(file.getName()+": FileSize "+kb+" KB, CheckSum="+s);
-        }
+        // Compute and print the checksum
+        int sum = sum(bb);
+        int kb = (sz + 1023) / 1024;
+        String s = Integer.toString(sum);
+        System.out.println(file.getName()+": FileSize "+kb+" KB, CheckSum="+s);
+
+        // Close the channel and the stream
+        bb.clear();
+        fc.close();
+        fis.close();
     }
 
     public static void main(String[] args) throws IOException {

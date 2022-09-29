@@ -53,7 +53,11 @@ public class Main {
                         CreateBak(Paths.get(path, fileName.toString()),
                                 Paths.get(reservePath, fileName.toString()));
                     } else if (kind == ENTRY_DELETE) {
-                        sum(Paths.get(reservePath, fileName.toString() + ".bak").toFile());
+                        try {
+                            sum(Paths.get(reservePath, fileName.toString() + ".bak").toFile());
+                        } catch (IOException e) {
+                            System.err.println(fileName.toString() + ": " + e);
+                        }
                         DeleteBakFile(Paths.get(reservePath, fileName.toString() + ".bak"));
                     } else if (kind == ENTRY_MODIFY) {
                         Diff(Paths.get(path, fileName.toString()),
