@@ -52,18 +52,14 @@ public class Main {
         Path tmpDir = Paths.get(currentDir, "tmp");
         System.out.println("Working directory is - "+tmpDir);
 
-        if (tmpDir.toFile().list().length == 0) {
-            System.err.print("Put any file into "+tmpDir+" path and re-run the program");
-        } else {
-            Scanner in = new Scanner(System.in);
-            System.out.print("Input a name of your file with extension: ");
-            File myFile = new File(tmpDir + File.separator + in.nextLine());
+        Scanner in = new Scanner(System.in);
+        System.out.print("Input a name of your file with extension: ");
+        File myFile = new File(tmpDir + File.separator + in.nextLine());
 
-            try {
-                sum(myFile);
-            } catch (IOException e) {
-                System.err.println(myFile + ": " + e);
-            }
+        try {
+            sum(myFile);
+        } catch (IOException e) {
+            System.err.println(myFile + ": " + e);
         }
     } 
 }
