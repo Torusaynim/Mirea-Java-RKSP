@@ -31,9 +31,6 @@ public class Main2 {
         }
     }
 
-
-
-
     private static int getRandomNumber(int min, int max) {
         return (int) Math.round(Math.random() * (max - min) + min);
     }
