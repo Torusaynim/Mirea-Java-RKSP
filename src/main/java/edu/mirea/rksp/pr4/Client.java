@@ -10,6 +10,11 @@ import io.rsocket.util.DefaultPayload;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class Client {
 
     private static Logger log = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -21,10 +26,54 @@ public class Client {
     public static void main(String[] args) {
         final Client client = new Client();
         final RSocket rSocket = client.connect();
-        client.fireAndForget(rSocket);
-        client.requestResponse(rSocket);
-        client.requestStream(rSocket);
-        client.requestChannel(rSocket);
+
+        final JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 500);
+        frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
+        final JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(300, 150));
+        panel.setBackground(Color.lightGray);
+        panel.setLayout(new GridLayout(2, 2, 10, 10));
+
+        final JButton fireAndForgetBtn = new JButton("Fire and Forget");
+        final JButton requestResponseBtn = new JButton("Request-Response");
+        final JButton requestStreamBtn = new JButton("Request-Stream");
+        final JButton requestChannelBtn = new JButton("Request-Channel");
+
+        final ActionListener AListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (e.getActionCommand()) {
+                    case "Fire and Forget":
+                        client.fireAndForget(rSocket);
+                        break;
+                    case "Request-Response":
+                        client.requestResponse(rSocket);
+                        break;
+                    case "Request-Stream":
+                        client.requestStream(rSocket);
+                        break;
+                    case "Request-Channel":
+                        client.requestChannel(rSocket);
+                        break;
+                }
+            }
+        };
+
+        fireAndForgetBtn.addActionListener(AListener);
+        requestResponseBtn.addActionListener(AListener);
+        requestStreamBtn.addActionListener(AListener);
+        requestChannelBtn.addActionListener(AListener);
+
+        panel.add(fireAndForgetBtn);
+        panel.add(requestResponseBtn);
+        panel.add(requestStreamBtn);
+        panel.add(requestChannelBtn);
+
+        frame.add(panel);
+        frame.setVisible(true);
     }
 
     private RSocket connect() {
