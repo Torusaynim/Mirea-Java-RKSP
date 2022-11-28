@@ -29,7 +29,7 @@ public class Client {
 
         final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+        frame.setSize(500, 300);
         frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         final JPanel panel = new JPanel();

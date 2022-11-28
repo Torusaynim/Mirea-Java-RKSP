@@ -26,3 +26,6 @@ replay_pid*
 # temporary files folder
 .reserve/
 tmp/
+
+# PgAdmin files
+pgadmin/
