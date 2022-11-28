@@ -1,11 +1,14 @@
 version: "3.9"
 services:
   postgres:
+    container_name: postgres_container
     image: postgres:13.3
     environment:
       POSTGRES_DB: "postgresdb"
       POSTGRES_USER: "pguser"
       POSTGRES_PASSWORD: "pgpass"
+    volumes:
+      - .:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
