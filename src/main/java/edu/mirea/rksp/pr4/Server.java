@@ -24,24 +24,6 @@ public final class Server {
     private static String url = "jdbc:postgresql://localhost:5432/postgresdb?user=pguser&password=pgpass";
 
     public static void main(String[] args) {
-        Connection conn;
-
-        {
-            try {
-                conn = DriverManager.getConnection(url);
-                Statement st = conn.createStatement();
-                ResultSet rs = st.executeQuery("SELECT * FROM rbac_userroles WHERE user_id = 1");
-                while (rs.next()) {
-                    System.out.print("Column 1 returned ");
-                    System.out.println(rs.getString(1));
-                }
-                rs.close();
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
         RSocketFactory.receive()
                 .acceptor((setup, sendingSocket) -> Mono.just(new DefaultSimpleService()))
                 .transport(WebsocketServerTransport.create(8801))
@@ -57,6 +39,24 @@ public final class Server {
         public Mono<Void> fireAndForget(Payload payload) {
             log.info("got fireAndForget in Server");
             log.info(payload.getDataUtf8());
+            Connection conn;
+
+            {
+                try {
+                    conn = DriverManager.getConnection(url);
+                    Statement st = conn.createStatement();
+                    ResultSet rs = st.executeQuery("SELECT * FROM rbac_userroles WHERE user_id = 1");
+                    while (rs.next()) {
+                        System.out.print("Column 1 returned ");
+                        System.out.println(rs.getString(1));
+                    }
+                    rs.close();
+                    st.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             return Mono.empty();
         }
 
@@ -64,6 +64,24 @@ public final class Server {
         public Mono<Payload> requestResponse(Payload payload) {
             log.info("got requestResponse in Server");
             log.info(payload.getDataUtf8());
+            Connection conn;
+
+            {
+                try {
+                    conn = DriverManager.getConnection(url);
+                    Statement st = conn.createStatement();
+                    ResultSet rs = st.executeQuery("SELECT * FROM rbac_userroles WHERE user_id = 1");
+                    while (rs.next()) {
+                        System.out.print("Column 1 returned ");
+                        System.out.println(rs.getString(1));
+                    }
+                    rs.close();
+                    st.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             return Mono.just(payload.getDataUtf8())
                     .map(payloadString -> MessageMapper.jsonToMessage(payloadString))
                     .map(message -> message.message + " | requestReponse from Server #1")
@@ -76,6 +94,24 @@ public final class Server {
         public Flux<Payload> requestStream(Payload payload) {
             log.info("got requestStream in Server");
             log.info(payload.getDataUtf8());
+            Connection conn;
+
+            {
+                try {
+                    conn = DriverManager.getConnection(url);
+                    Statement st = conn.createStatement();
+                    ResultSet rs = st.executeQuery("SELECT * FROM rbac_userroles WHERE user_id = 1");
+                    while (rs.next()) {
+                        System.out.print("Column 1 returned ");
+                        System.out.println(rs.getString(1));
+                    }
+                    rs.close();
+                    st.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             return Mono.just(payload.getDataUtf8())
                     .map(payloadString -> MessageMapper.jsonToMessage(payloadString))
                     .flatMapMany(msg -> Flux.range(0, 5)
@@ -88,6 +124,24 @@ public final class Server {
         @Override
         public Flux<Payload> requestChannel(Publisher<Payload> payloads) {
             log.info("got requestChannel in Server");
+            Connection conn;
+
+            {
+                try {
+                    conn = DriverManager.getConnection(url);
+                    Statement st = conn.createStatement();
+                    ResultSet rs = st.executeQuery("SELECT * FROM rbac_userroles WHERE user_id = 1");
+                    while (rs.next()) {
+                        System.out.print("Column 1 returned ");
+                        System.out.println(rs.getString(1));
+                    }
+                    rs.close();
+                    st.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             return Flux.from(payloads)
                     .map(payload -> payload.getDataUtf8())
                     .map(payloadString -> {
