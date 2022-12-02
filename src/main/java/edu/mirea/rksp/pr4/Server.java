@@ -33,10 +33,11 @@ public final class Server {
                 .block();
     }
 
-    private static final class DefaultSimpleService extends AbstractRSocket {
+    public static final class DefaultSimpleService extends AbstractRSocket {
 
         @Override
         public Mono<Void> fireAndForget(Payload payload) {
+            System.out.println(payload);
             log.info("got fireAndForget in Server");
             log.info(payload.getDataUtf8());
             Connection conn;
@@ -62,6 +63,7 @@ public final class Server {
 
         @Override
         public Mono<Payload> requestResponse(Payload payload) {
+            System.out.println(payload);
             log.info("got requestResponse in Server");
             log.info(payload.getDataUtf8());
             Connection conn;
@@ -92,6 +94,7 @@ public final class Server {
 
         @Override
         public Flux<Payload> requestStream(Payload payload) {
+            System.out.println(payload);
             log.info("got requestStream in Server");
             log.info(payload.getDataUtf8());
             Connection conn;
@@ -123,6 +126,7 @@ public final class Server {
 
         @Override
         public Flux<Payload> requestChannel(Publisher<Payload> payloads) {
+            System.out.println(payloads);
             log.info("got requestChannel in Server");
             Connection conn;
 
