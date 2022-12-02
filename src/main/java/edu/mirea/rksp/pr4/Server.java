@@ -11,6 +11,7 @@ import org.reactivestreams.Publisher;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.sql.*;
 
 public final class Server {
 
@@ -20,7 +21,27 @@ public final class Server {
         log.setLevel(Level.INFO);
     }
 
+    private static String url = "jdbc:postgresql://localhost:5432/postgresdb?user=pguser&password=pgpass";
+
     public static void main(String[] args) {
+        Connection conn;
+
+        {
+            try {
+                conn = DriverManager.getConnection(url);
+                Statement st = conn.createStatement();
+                ResultSet rs = st.executeQuery("SELECT * FROM rbac_userroles WHERE user_id = 1");
+                while (rs.next()) {
+                    System.out.print("Column 1 returned ");
+                    System.out.println(rs.getString(1));
+                }
+                rs.close();
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         RSocketFactory.receive()
                 .acceptor((setup, sendingSocket) -> Mono.just(new DefaultSimpleService()))
                 .transport(WebsocketServerTransport.create(8801))
