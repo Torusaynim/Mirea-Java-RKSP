@@ -21,7 +21,7 @@ public final class Server {
         log.setLevel(Level.INFO);
     }
 
-    private static String url = "jdbc:postgresql://localhost:5432/postgresdb?user=pguser&password=pgpass";
+    private static String url = "jdbc:postgresql://localhost:5433/postgresdb?user=pguser&password=pgpass";
 
     public static void main(String[] args) {
         RSocketFactory.receive()
